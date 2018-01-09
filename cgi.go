@@ -41,5 +41,3 @@ func (c *CGI) SetGoExe(goExe string) {
 func (c *CGI) GetGoExe() string {
 	return c.goExe
 }
-
-

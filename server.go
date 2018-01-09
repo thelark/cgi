@@ -1,8 +1,8 @@
 package cgi
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
 )
 
 type Server struct {
@@ -17,11 +17,12 @@ func (s *Server) Run(addr string, cgi *CGI) error {
 	return http.ListenAndServe(addr, nil)
 }
 func (s *Server) CGIHandler(cgi *CGI) func(w http.ResponseWriter, req *http.Request) {
-	dir := cgi.runPath
-	cgi.Path = cgi.goExe
-	cgi.Dir = dir
-	cgi.Env = append(cgi.Env, fmt.Sprintf("GOROOT=%s", cgi.goRoot))
+
 	return func(w http.ResponseWriter, req *http.Request) {
+		dir := cgi.runPath
+		cgi.Path = cgi.goExe
+		cgi.Dir = dir
+		cgi.Env = append(cgi.Env, fmt.Sprintf("GOROOT=%s", cgi.goRoot))
 		scriptPath := dir + req.URL.Path // 设置 CGI 可执行文件的工作目录
 		args := []string{"run", scriptPath}
 		cgi.Args = append(cgi.Args, args...)
